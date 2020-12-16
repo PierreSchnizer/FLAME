@@ -1,0 +1,19 @@
+sim_type="Vector";
+
+S: source, initial = [1,0,1,0,1,0];
+
+D1: drift, L = 0.02;
+
+Q1: quadrupole, L = 0.01, K=0.0;
+
+M1: marker;
+
+Q2: quadrupole, L = 0.01, K=0.0;
+
+M2: marker;
+
+Q3: quadrupole, L = 0.01, K=0.0;
+
+M3: marker;
+
+demo : LINE = (S, D1, Q1, M1, Q2, M2, Q3, M3);

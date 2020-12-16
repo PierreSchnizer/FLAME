@@ -1,0 +1,86 @@
+record(bo, "$(P)run") {
+     field(DTYP, "FLAME Simulate")
+     field(OUT , "@$(SIM)")
+     field(SCAN, "1 second")
+     field(ZNAM, "Sim")
+     field(ONAM, "Sim")
+}
+
+record(ao, "$(P)Q1") {
+     field(DTYP, "FLAME Setting")
+     field(OUT , "@$(SIM) Q1 K")
+     field(VAL , "0")
+     field(HOPR, "10")
+     field(LOPR, "-10")
+}
+
+record(ao, "$(P)Q2") {
+     field(DTYP, "FLAME Setting")
+     field(OUT , "@$(SIM) Q2 K")
+     field(VAL , "0")
+     field(HOPR, "10")
+     field(LOPR, "-10")
+}
+
+record(ao, "$(P)Q3") {
+     field(DTYP, "FLAME Setting")
+     field(OUT , "@$(SIM) Q3 K")
+     field(VAL , "0")
+     field(HOPR, "10")
+     field(LOPR, "-10")
+}
+
+record(ai, "$(P)M1:X") {
+    field(DTYP, "FLAME State")
+    field(INP , "@$(SIM) M1 state[0]")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)M1:Y") {
+    field(DTYP, "FLAME State")
+    field(INP , "@$(SIM) M1 state[2]")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)M2:X") {
+    field(DTYP, "FLAME State")
+    field(INP , "@$(SIM) M2 state[0]")
+    field(SCAN, "I/O Intr")
+}
+
+record(ai, "$(P)M2:Y") {
+    field(DTYP, "FLAME State")
+    field(INP , "@$(SIM) M2 state[2]")
+    field(SCAN, "I/O Intr")
+}
+
+record(waveform, "$(P)ORB:X") {
+    field(DTYP, "FLAME State Orbit")
+    field(INP , "@$(SIM) * state[0]")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "DOUBLE")
+    field(NELM, "16")
+}
+
+record(waveform, "$(P)ORB:Y") {
+    field(DTYP, "FLAME State Orbit")
+    field(INP , "@$(SIM) * state[2]")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "DOUBLE")
+    field(NELM, "16")
+}
+
+record(waveform, "$(P)ORB:S") {
+    field(DTYP, "FLAME State Orbit")
+    field(INP , "@$(SIM) * pos")
+    field(SCAN, "I/O Intr")
+    field(FTVL, "DOUBLE")
+    field(NELM, "16")
+}
+
+record(columnarin, "$(P)TBL") {
+    field(DTYP, "FLAME BPM")
+    field(INP , "@$(SIM) marker")
+    field(SCAN, "I/O Intr")
+    field(LAY , "Table")
+}
