@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <iostream>
 
+#include <boost/regex.hpp>
+
 #include <epicsExport.h>
 #include <epicsExit.h>
 
@@ -177,6 +179,24 @@ void flameShow(const char *name)
     }
 }
 
+void flameGet(const char *name, const char *elem, const char* param)
+{
+    try {
+        Sim *sim;
+        {
+            Guard G(SimGlobal.lock);
+            if(!find(SimGlobal.sims, name, sim))
+                throw std::runtime_error("Unknown sim instance name");
+        }
+        Guard G(sim->lock);
+
+        static boost::regex elementP("([^\\s\\[]+)(?:\\[(\\d+)\\])");
+
+    }catch(std::exception& e){
+        fprintf(stderr, "Error: %s\n", e.what());
+    }
+}
+
 namespace {
 
 //! Stop worker threads
@@ -207,6 +227,7 @@ void flameRegistrar()
     iocshRegister<const char*, int, &flameDebug>("flameDebug", "name", "level");
     iocshRegister<const char*, &flameShowConfig>("flameShowConfig", "name");
     iocshRegister<const char*, &flameShow>("flameShow", "name");
+    iocshRegister<const char*,const char*,const char*, &flameGet>("flameGet", "name", "element(s)", "param");
 
     epicsAtExit(&flameCleanup, NULL);
 }

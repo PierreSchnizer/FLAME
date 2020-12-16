@@ -54,8 +54,8 @@ long orbit_init_ci(columnarinRecord *prec)
         priv->start = range.first;
         priv->end = range.second;
 
-        columnarin::add_column(prec, "secondsPastEpoch", "sec", pvd::pvUInt);
-        columnarin::add_column(prec, "nanoseconds", "ns", pvd::pvUInt);
+        multiArray::add_column(prec, "secondsPastEpoch", "sec", pvd::pvUInt);
+        multiArray::add_column(prec, "nanoseconds", "ns", pvd::pvUInt);
 
         for(Machine::lookup_iterator it = range.first; it!=range.second; ++it) {
             ElementVoid *elem = *it;
@@ -64,8 +64,8 @@ long orbit_init_ci(columnarinRecord *prec)
             temp.colX += 'X';
             temp.colY += 'Y';
 
-            columnarin::add_column(prec, temp.colX.c_str(), temp.colX.c_str(), pvd::pvDouble);
-            columnarin::add_column(prec, temp.colY.c_str(), temp.colY.c_str(), pvd::pvDouble);
+            multiArray::add_column(prec, temp.colX.c_str(), temp.colX.c_str(), pvd::pvDouble);
+            multiArray::add_column(prec, temp.colY.c_str(), temp.colY.c_str(), pvd::pvDouble);
 
             temp.last = priv->sim->get_measure(elem->index);
             priv->bpms.push_back(temp);
@@ -151,12 +151,16 @@ long orbit_read_tbl(columnarinRecord* prec)
             bpm.X = pvd::freeze(X);
             bpm.Y = pvd::freeze(Y);
 
-            columnarin::set_column(prec, bpm.colX.c_str(), pvd::static_shared_vector_cast<const void>(bpm.X));
-            columnarin::set_column(prec, bpm.colY.c_str(), pvd::static_shared_vector_cast<const void>(bpm.Y));
+            multiArray::set_column(prec, bpm.colX.c_str(),
+                                   pvd::static_shared_vector_cast<const void>(bpm.X));
+            multiArray::set_column(prec, bpm.colY.c_str(),
+                                   pvd::static_shared_vector_cast<const void>(bpm.Y));
         }
 
-        columnarin::set_column(prec, "secondsPastEpoch", pvd::static_shared_vector_cast<const void>(priv->sec));
-        columnarin::set_column(prec, "nanoseconds", pvd::static_shared_vector_cast<const void>(priv->ns));
+        multiArray::set_column(prec, "secondsPastEpoch",
+                               pvd::static_shared_vector_cast<const void>(priv->sec));
+        multiArray::set_column(prec, "nanoseconds",
+                               pvd::static_shared_vector_cast<const void>(priv->ns));
 
         return 0;
     }CATCH_ALARM()

@@ -16,7 +16,7 @@ struct SimDevOrbit : public SimDev
     unsigned ndim;
     size_t dim[2];
 
-    Machine::lookup_iterator start,end;
+    Machine::iterator start,end;
     size_t nelems;
 };
 
@@ -50,7 +50,8 @@ long orbit_init_common(dbCommon *prec, const char *link)
             priv->dim[1] = boost::lexical_cast<size_t>(M.str(5));
         }
 
-        std::pair<Machine::lookup_iterator, Machine::lookup_iterator> range = priv->sim->machine->equal_range_type(M.str(2));
+        std::pair<Machine::iterator, Machine::iterator> range = std::make_pair(priv->sim->machine->begin(),
+                                                                               priv->sim->machine->end());
 
         if(range.first==range.second)
             throw std::runtime_error("No such elements");
@@ -59,7 +60,7 @@ long orbit_init_common(dbCommon *prec, const char *link)
         priv->end = range.second;
 
         size_t N=0;
-        for(Machine::lookup_iterator it = range.first; it!=range.second; ++it, N++) {
+        for(Machine::iterator it = range.first; it!=range.second; ++it, N++) {
             ElementVoid *elem = *it;
             priv->sim->get_measure(elem->index);
         }
@@ -116,7 +117,7 @@ long orbit_read_wf(waveformRecord *prec)
 
         size_t i = 0;
 
-        for(Machine::lookup_iterator it = priv->start, end = priv->end;
+        for(Machine::iterator it = priv->start, end = priv->end;
             it!=end; ++it, i++)
         {
             ElementVoid * const elem = *it;
@@ -162,7 +163,7 @@ long orbit_index_wf(waveformRecord *prec)
         double *pbuf = (double*)prec->bptr;
         size_t i = 0;
 
-        for(Machine::lookup_iterator it = priv->start, end = priv->end;
+        for(Machine::iterator it = priv->start, end = priv->end;
             it!=end; ++it, i++)
         {
             if(i==prec->nelm) {
