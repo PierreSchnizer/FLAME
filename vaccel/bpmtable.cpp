@@ -125,7 +125,8 @@ long orbit_read_tbl(columnarinRecord* prec)
 
         Guard G(priv->sim->lock);
 
-        for(auto& bpm : priv->bpms) {
+        for(std::vector<SimBPM>::iterator it=priv->bpms.begin(), end=priv->bpms.end(); it!=end; ++it) {
+            SimBPM& bpm = *it;
             StateBase::ArrayInfo info;
 
             if(!bpm.last->last->getArray(priv->param_index, info)) {
